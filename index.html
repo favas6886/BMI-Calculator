@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cantora+One&family=Great+Vibes&family=Italiana&family=Jaro:opsz@6..72&family=Kaushan+Script&family=Marvel:ital,wght@0,400;0,700;1,400;1,700&family=Pacifico&family=Rampart+One&family=Rubik:ital,wght@0,300..900;1,300..900&family=Satisfy&family=Vast+Shadow&display=swap" rel="stylesheet">
+</head>
+<body>
+   <div class=" mt-5 d-flex justify-content-center">
+        <div class="container " >
+            <div class="calculator-container">
+                <h2 class="heaad text-center mb-4">BMI Calculator</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="age" placeholder="Enter your age" min="1" max="120">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="height" class="form-label" >Height (cm)</label>
+                        <input type="number" class="form-control" id="height" placeholder="Enter your height" min="1" >
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="weight" class="form-label" >Weight (kg)</label>
+                        <input type="number" class="form-control" id="weight" placeholder="Enter your weight" min="1">
+                    </div>
+                </div>
+<div class="d-flex justify-content-center mt-4">
+                    <button onclick="calculateBMI()" class="buttton d-flex justify-content-center  ">Calculate BMI</button>
+    
+</div>                
+                <div class="gauge-container ">
+                    <div class="gauge-background"></div>
+                    <div id="bmiPointer" class="gauge-pointer"></div>
+                </div>
+                
+                <div id="result" class="text-center mt-3 h4 text-bolder"></div>
+                <div id="category" class="text-center"></div>
+                <div id="health-insights" class="text-center mt-3 small text-muted" ></div>
+            </div>
+        </div>
+   </div>
+
+    <script>
+        function calculateBMI() {
+            // Get input values
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const resultDiv = document.getElementById('result');
+            const categoryDiv = document.getElementById('category');
+            const insightsDiv = document.getElementById('health-insights');
+            const bmiPointer = document.getElementById('bmiPointer');
+
+            // Validate inputs
+            if (!age || !gender || !height || !weight) {
+                resultDiv.innerHTML = 'Please fill in all fields';
+                resultDiv.className = 'text-center text-danger';
+                categoryDiv.innerHTML = '';
+                insightsDiv.innerHTML = '';
+                bmiPointer.style.transform = 'translateX(-50%) rotate(0deg)';
+                return;
+            }
+
+            // Calculate BMI (height in meters)
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            const roundedBMI = bmi.toFixed(1);
+
+            // Determine BMI category with age and gender considerations
+            let category = '';
+            let categoryColor = '';
+            let healthInsights = '';
+            let rotation = 0;
+
+            // More nuanced BMI categorization
+            if (age < 18) {
+                // Use different BMI ranges for children/teenagers
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    categoryColor = 'text-warning';
+                    healthInsights = 'Consult a pediatrician for personalized advice.';
+                    rotation = -45;
+                } else if (bmi < 25) {
+                    category = 'Healthy Weight';
+                    categoryColor = 'text-success';
+                    rotation = 0;
+                } else {
+                    category = 'Overweight';
+                    categoryColor = 'text-danger';
+                    healthInsights = 'Consider consulting a healthcare professional.';
+                    rotation = 45;
+                }
+            } else {
+                // Adult categorization
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    categoryColor = 'text-warning';
+                    healthInsights = gender === 'female' 
+                        ? 'Low body weight can affect hormonal balance.' 
+                        : 'Consider consulting a nutritionist.';
+                    rotation = -45;
+                } else if (bmi >= 18.5 && bmi < 25) {
+                    category = 'Normal Weight';
+                    categoryColor = 'text-success';
+                    healthInsights = 'Maintain a balanced diet and regular exercise.';
+                    rotation = 0;
+                } else if (bmi >= 25 && bmi < 30) {
+                    category = 'Overweight';
+                    categoryColor = 'text-warning';
+                    healthInsights = gender === 'female' 
+                        ? 'Focus on healthy lifestyle changes.' 
+                        : 'Consider diet and exercise modifications.';
+                    rotation = 45;
+                } else {
+                    category = 'Obese';
+                    categoryColor = 'text-danger';
+                    healthInsights = 'Recommend consulting a healthcare professional.';
+                    rotation = 90;
+                }
+            }
+
+            // Display results
+            resultDiv.innerHTML = `Your BMI: ${roundedBMI}`;
+            resultDiv.className = 'text-center';
+            categoryDiv.innerHTML = `Category: ${category}`;
+            categoryDiv.className = `text-center ${categoryColor}`;
+            insightsDiv.innerHTML = healthInsights;
+
+            // Animate gauge pointer
+            bmiPointer.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

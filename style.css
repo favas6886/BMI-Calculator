@@ -1,0 +1,104 @@
+
+body {
+    background: linear-gradient(45deg, #8786e0, #D7EDE2);
+
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.heaad{
+    font-family: "Vast Shadow", serif;
+    text-shadow: 1px 1px 9px rgb(27, 26, 26);
+    color: #1b1757;
+}
+.calculator-container {
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: 2px 5px 10px #615f5f, -2px 3px 10px #615f5f;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+}
+.buttton{
+    padding: 1em 2em;
+    background-color: rgb(252, 250, 250);
+    border: none;
+    color: rgb(8, 8, 8);
+    border-radius: 1000px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.buttton::after{
+    content: '';
+    position: absolute;
+    height: 107%;
+    width: 102%;
+    border-radius: 1000px;
+    background: red;
+    background-image:linear-gradient(to bottom right,#1f1cce,#f3f2f7) ;
+    z-index: -1;
+}
+.buttton:hover{
+    z-index: 0;
+    box-shadow: 40px 0 100px #1f1cce, -40px 0 100px #f2f2f3;
+}
+
+
+#bmiGauge {
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+}
+.gauge-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+}
+.gauge-background {
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to right, 
+        green 0%, 
+        green 25%, 
+        yellow 25%, 
+        yellow 50%, 
+        orange 50%, 
+        orange 75%, 
+        red 75%, 
+        red 100%);
+    bottom: 0;
+    border-radius: 10px;
+}
+.gauge-pointer {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 50px solid black;
+    transform-origin: bottom center;
+    bottom: 20px;
+    left: 50%;
+    transition: transform 0.5s ease-out;
+}
+#health-insights{
+    font-family: "Pacifico", serif;
+    text-shadow: 1px 1px 4px rgb(247, 246, 246);
+    
+}
+#category{
+    font-family: "Cantora One", sans-serif;
+    
+}
+
+.form-label{
+    font-weight: 500;
+}
